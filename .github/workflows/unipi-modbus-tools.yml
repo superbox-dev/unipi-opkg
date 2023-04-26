@@ -57,3 +57,9 @@ jobs:
           tar -C opkg-package -czvf \
             opkg-package/${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk \
             control.tar.gz data.tar.gz debian-binary
+
+      - name: Upload OPKG package
+        uses: actions/upload-artifact@v3
+        with:
+          name: opkg-package
+          path: opkg-package/*.ipk
