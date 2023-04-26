@@ -3,6 +3,9 @@ name: Unipi Modbus Tools
 on:
   workflow_dispatch:
 
+env:
+  VERSION: 1.3.4
+
 jobs:
   build-opkg:
     name: Build OPKG package
@@ -11,11 +14,11 @@ jobs:
     steps:
       - name: Download
         run: |
-          wget https://repo.unipi.technology/debian/pool/main/u/unipi-tools/unipi-modbus-tools_1.3.4~buster_arm64.deb
+          wget https://repo.unipi.technology/debian/pool/main/u/unipi-tools/unipi-modbus-tools_${{ env.VERSION }}~buster_arm64.deb
 
       - name: Uncompress debian package
         run: |
-          ar x unipi-modbus-tools_1.3.4~buster_arm64.deb
+          ar x unipi-modbus-tools_${{ env.VERSION }}~buster_arm64.deb
           
           mkdir -pv control
           tar xf control.tar.xz -C control
@@ -55,7 +58,7 @@ jobs:
           sudo chown -R root:root opkg-package/*
 
           tar -C opkg-package -czvf \
-            opkg-package/${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk \
+            opkg-package/unipi-modbus-tools_${{ env.VERSION }}_aarch64.ipk \
             control.tar.gz data.tar.gz debian-binary
 
       - name: Upload OPKG package
