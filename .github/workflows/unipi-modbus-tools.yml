@@ -1,0 +1,32 @@
+name: Unipi Modbus Tools
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-opkg:
+    name: Generate OPKG
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download
+        run: |
+          wget https://repo.unipi.technology/debian/pool/main/u/unipi-tools/unipi-modbus-tools_1.3.4~buster_arm64.deb
+
+      - name: Uncompress debian package
+        run: |
+          ar x nipi-modbus-tools_1.3.4~buster_arm64.deb
+          tar xfv control.tar.xz
+          tar xfv data.tar.xz
+
+      - name: Generate control file
+        run: |
+          mkdir -pv opkg-package/control
+          dpkg-deb --showformat='Package: ${binary:Package}\nVersion: ${Version}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
+          
+          (
+            echo "Architecture: aarch64"
+            echo "License: GPL-2.0"
+          ) >> opkg-package/control/control
+          
+          cat opkg-package/control/control
