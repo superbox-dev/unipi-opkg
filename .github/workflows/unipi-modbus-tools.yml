@@ -19,7 +19,7 @@ jobs:
           tar xfv control.tar.xz
           tar xfv data.tar.xz
 
-      - name: Generate control file
+      - name: Create control file
         run: |
           mkdir -pv opkg-package/control
           dpkg-deb --showformat='Package: ${Package}\nVersion: ${Version}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
@@ -29,4 +29,25 @@ jobs:
             echo "License: GPL-2.0"
           ) >> opkg-package/control/control
           
-          cat opkg-package/control/control
+          echo "2.0" > opkg-package/debian-binary
+
+      - name: Collect data
+        run: |
+          mkdir -pv opkg-package/data/opt/unipi/tools
+          cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/usr/local/opt/unipi/tools/
+          cp -v data/etc/default/unipitcp opkg-package/data/usr/local/etc/default/unipitcp
+
+      - name: Create conffiles file
+        run: |
+          find data/etc -type f | sed 's/data/\/usr\/local/g' > opkg-package/control/conffiles
+
+      - name: Build OPKG package
+        run: |
+          tar -C opkg-package/control -czvf opkg-package/control.tar.gz .
+          tar -C opkg-package/data -czvf opkg-package/data.tar.gz .
+
+          sudo chown -R root:root opkg-package/*
+
+          tar -C opkg-package -czvf \
+            opkg-package/${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk \
+            control.tar.gz data.tar.gz debian-binary
