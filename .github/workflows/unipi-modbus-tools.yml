@@ -15,7 +15,7 @@ jobs:
 
       - name: Uncompress debian package
         run: |
-          ar x nipi-modbus-tools_1.3.4~buster_arm64.deb
+          ar x unipi-modbus-tools_1.3.4~buster_arm64.deb
           tar xfv control.tar.xz
           tar xfv data.tar.xz
 
