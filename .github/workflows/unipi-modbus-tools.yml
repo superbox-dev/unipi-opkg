@@ -22,7 +22,7 @@ jobs:
       - name: Generate control file
         run: |
           mkdir -pv opkg-package/control
-          dpkg-deb --showformat='Package: ${binary:Package}\nVersion: ${Version}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
+          dpkg-deb --showformat='Package: ${Package}\nVersion: ${Version}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
           
           (
             echo "Architecture: aarch64"
