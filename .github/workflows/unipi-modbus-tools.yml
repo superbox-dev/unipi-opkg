@@ -16,7 +16,11 @@ jobs:
       - name: Uncompress debian package
         run: |
           ar x unipi-modbus-tools_1.3.4~buster_arm64.deb
+          
+          mkdir -pv control
           tar xf control.tar.xz -C control
+          
+          mkdir -pv data
           tar xf data.tar.xz -C data
 
       - name: Create control file
