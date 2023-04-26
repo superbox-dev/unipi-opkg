@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-opkg:
-    name: Generate OPKG
+  build-opkg:
+    name: Build OPKG package
     runs-on: ubuntu-latest
 
     steps:
@@ -16,8 +16,8 @@ jobs:
       - name: Uncompress debian package
         run: |
           ar x unipi-modbus-tools_1.3.4~buster_arm64.deb
-          tar xfv control.tar.xz
-          tar xfv data.tar.xz
+          tar xf control.tar.xz -C control
+          tar xf data.tar.xz -C data
 
       - name: Create control file
         run: |
