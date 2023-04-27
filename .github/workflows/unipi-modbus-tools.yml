@@ -1,7 +1,5 @@
 name: Unipi Modbus Tools
 
-concurrency: publish_on_ftp
-
 on:
   workflow_dispatch:
 
