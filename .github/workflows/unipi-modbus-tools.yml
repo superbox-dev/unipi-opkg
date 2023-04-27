@@ -36,9 +36,10 @@ jobs:
       - name: Create control file
         run: |
           mkdir -pv opkg-package/control
-          dpkg-deb --showformat='Package: ${Package}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
+          dpkg-deb --showformat='Package: ${Package}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
           
           (
+            echo "Maintainer: Michael Hacker <mh@superbox.one>"
             echo "Version: ${{ env.PACKAGE_VERSION }}"
             echo "Architecture: aarch64"
             echo "License: GPL-2.0"
