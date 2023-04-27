@@ -27,14 +27,8 @@ jobs:
         with:
           path: .
 
-      - name: Download
-        run: |
-          wget ${{ inputs.repo-url }}/${{ inputs.package-name }}_${{ inputs.package-version }}~buster_arm64.deb
-
       - name: Uncompress debian package
-        run: |
-          ar x ${{ inputs.package-name }}_${{ inputs.package-version }}~buster_arm64.deb
-          
+        run: |          
           mkdir -pv control
           tar xf control.tar.xz -C control
           
