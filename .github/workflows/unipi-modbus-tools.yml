@@ -7,7 +7,7 @@ env:
   VERSION: 1.3.4
 
 jobs:
-  build-opkg:
+  build-opkg-package:
     name: Build OPKG package
     runs-on: ubuntu-latest
 
@@ -29,9 +29,10 @@ jobs:
       - name: Create control file
         run: |
           mkdir -pv opkg-package/control
-          dpkg-deb --showformat='Package: ${Package}\nVersion: ${Version}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
+          dpkg-deb --showformat='Package: ${Package}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
           
           (
+            echo "Version: ${{ env.VERSION }}"
             echo "Architecture: aarch64"
             echo "License: GPL-2.0"
           ) >> opkg-package/control/control
@@ -45,6 +46,8 @@ jobs:
           
           mkdir -pv opkg-package/data/usr/local/etc/default
           cp -v data/etc/default/unipitcp opkg-package/data/usr/local/etc/default/
+          
+          cp -v unipi-modbus-tools/data/* opkg-package/data/
 
       - name: Create conffiles file
         run: |
@@ -66,3 +69,16 @@ jobs:
         with:
           name: opkg-package
           path: opkg-package/*.ipk
+
+  publish-on-ftp:
+    name: Publish on FTP
+    needs:
+      - build-opkg-package
+    uses: superbox-dev/python-package-workflows/.github/workflows/publish-on-ftp.yml@main
+    with:
+      ftp-hostname: ${{ vars.FTP_HOSTNAME }}
+      ftp-port: ${{ vars.FTP_PORT }}
+      ftp-username: ${{ vars.FTP_USERNAME }}
+      ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
+    secrets:
+      FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
