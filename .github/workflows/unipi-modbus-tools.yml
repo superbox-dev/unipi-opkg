@@ -50,7 +50,7 @@ jobs:
           mkdir -pv opkg-package/data/usr/local/etc/default
           cp -v data/etc/default/unipitcp opkg-package/data/usr/local/etc/default/
           
-          cp -v unipi-modbus-tools/data/* opkg-package/data/
+          cp -rv unipi-modbus-tools/data/* opkg-package/data/
 
       - name: Create conffiles file
         run: |
