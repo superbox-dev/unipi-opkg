@@ -2,9 +2,6 @@ name: Unipi Modbus Tools
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - '*'
 
 env:
   PACKAGE_NAME: unipi-modbus-tools
