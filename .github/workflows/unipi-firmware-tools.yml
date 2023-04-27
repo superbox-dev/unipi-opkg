@@ -1,0 +1,89 @@
+name: Unipi Modbus Tools
+
+on:
+  workflow_dispatch:
+
+env:
+  PACKAGE_NAME: unipi-modbus-tools
+  PACKAGE_VERSION: 1.3.4
+
+jobs:
+  build-opkg-package:
+    name: Build OPKG package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Download
+        run: |
+          wget https://repo.unipi.technology/debian/pool/main/u/unipi-tools/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}~buster_arm64.deb
+
+      - name: Uncompress debian package
+        run: |
+          ar x ${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}~buster_arm64.deb
+          
+          mkdir -pv control
+          tar xf control.tar.xz -C control
+          
+          mkdir -pv data
+          tar xf data.tar.xz -C data
+
+      - name: Create control file
+        run: |
+          mkdir -pv opkg-package/control
+          dpkg-deb --showformat='Package: ${Package}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
+          
+          (
+            echo "Maintainer: Michael Hacker <mh@superbox.one>"
+            echo "Version: ${{ env.PACKAGE_VERSION }}"
+            echo "Architecture: aarch64"
+            echo "License: GPL-2.0"
+          ) >> opkg-package/control/control
+          
+          echo "2.0" > opkg-package/debian-binary
+
+      - name: Collect data
+        run: |
+          mkdir -pv opkg-package/data/usr/local/opt/unipi/tools
+          cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/usr/local/opt/unipi/tools/
+          
+          mkdir -pv opkg-package/data/usr/local/etc/default
+          cp -v data/etc/default/unipitcp opkg-package/data/usr/local/etc/default/
+          
+          cp -rv unipi-modbus-tools/data/* opkg-package/data/
+
+      - name: Create conffiles file
+        run: |
+          find data/etc -type f | sed 's/data/\/usr\/local/g' > opkg-package/control/conffiles
+
+      - name: Build OPKG package
+        run: |
+          sudo chown -R root:root opkg-package/*
+          
+          tar -C opkg-package/control -czvf opkg-package/control.tar.gz .
+          tar -C opkg-package/data -czvf opkg-package/data.tar.gz .
+
+          tar -C opkg-package -czvf \
+            opkg-package/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}_aarch64.ipk \
+            control.tar.gz data.tar.gz debian-binary
+
+      - name: Upload OPKG package
+        uses: actions/upload-artifact@v3
+        with:
+          name: opkg-package
+          path: opkg-package/*.ipk
+
+  publish-on-ftp:
+    name: Publish on FTP
+    needs:
+      - build-opkg-package
+    uses: superbox-dev/python-package-workflows/.github/workflows/publish-on-ftp.yml@main
+    with:
+      ftp-hostname: ${{ vars.FTP_HOSTNAME }}
+      ftp-port: ${{ vars.FTP_PORT }}
+      ftp-username: ${{ vars.FTP_USERNAME }}
+      ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
+    secrets:
+      FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
