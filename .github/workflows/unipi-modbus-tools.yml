@@ -38,9 +38,7 @@ jobs:
           tar xf data.tar.xz -C data
 
       - name: Collect data
-        run: |
-          cp -v *.deb opkg-package/
-          
+        run: |          
           mkdir -pv opkg-package/data/usr/local/opt/unipi/tools
           cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/usr/local/opt/unipi/tools/
           
@@ -48,6 +46,8 @@ jobs:
           cp -v data/etc/default/unipitcp opkg-package/data/usr/local/etc/default/
           
           cp -rv unipi-modbus-tools/data/* opkg-package/data/
+
+          cp -v *.deb opkg-package/
 
       - name: Upload OPKG data
         uses: actions/upload-artifact@v3
