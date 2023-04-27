@@ -32,7 +32,7 @@ jobs:
       - name: Download and uncompress debian package
         run: |
           wget ${{ env.REPO_URL }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}_all.deb
-          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}_all.deb
 
           mkdir -pv control
           tar xf control.tar.xz -C control
