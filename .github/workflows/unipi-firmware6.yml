@@ -46,12 +46,12 @@ jobs:
           cp -v data/opt/unipi/firmware/* opkg-package/data/usr/local/opt/unipi/firmware/
 
           cp -v *.deb opkg-package/
+          tar czvf opkg-package.tar.gz opkg-package
 
       - name: Upload OPKG data
         uses: actions/upload-artifact@v3
         with:
-          name: opkg-package
-          path: opkg-package/*
+          name: opkg-package.tar.gz
 
   build-opkg-package:
     name: Build OPKG package

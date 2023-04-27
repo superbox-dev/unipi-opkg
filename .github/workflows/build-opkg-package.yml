@@ -28,6 +28,8 @@ jobs:
 
       - name: Create control file
         run: |
+          tar xzfv opkg-package.tar.gz
+          
           mkdir -pv opkg-package/control
           dpkg-deb --showformat='Package: ${Package}\nDescription: ${binary:Summary}\n' --show opkg-package/${{ inputs.package-name }}_${{ inputs.package-version }}*.deb > opkg-package/control/control 
           
