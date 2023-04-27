@@ -1,0 +1,73 @@
+name: Unipi Firmware 6
+
+on:
+  workflow_dispatch:
+
+env:
+  PACKAGE_NAME: unipi-firmware6
+  PACKAGE_VERSION: 6.18
+  REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-firmware6
+
+jobs:
+  prepare-data:
+    name: Prepare data
+    runs-on: ubuntu-latest
+
+    outputs:
+      package-name: ${{ steps.parameters.outputs.package-name }}
+      package-version: ${{ steps.parameters.outputs.package-version }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - id: parameters
+        run: |
+          echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
+          echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
+
+      - name: Download and uncompress debian package
+        run: |
+          wget ${{ env.REPO_URL }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+
+          mkdir -pv control
+          tar xf control.tar.xz -C control
+          
+          mkdir -pv data
+          tar xf data.tar.xz -C data
+
+      - name: Collect data
+        run: |
+          mkdir -pv opkg-package/data/usr/local/opt/unipi/firmware
+          cp -v data/opt/unipi/firmware/* opkg-package/data/usr/local/opt/unipi/firmware/
+
+          cp -v *.deb opkg-package/
+
+      - name: Upload OPKG data
+        uses: actions/upload-artifact@v3
+        with:
+          name: opkg-package
+          path: opkg-package/*
+
+  build-opkg-package:
+    name: Build OPKG package
+    needs:
+      - prepare-data
+    uses: ./.github/workflows/build-opkg-package.yml
+    with:
+      package-name: ${{ needs.prepare-data.outputs.package-name }}
+      package-version: ${{ needs.prepare-data.outputs.package-version }}
+
+  publish-on-ftp:
+    name: Publish on FTP
+    needs:
+      - build-opkg-package
+    uses: superbox-dev/python-package-workflows/.github/workflows/publish-on-ftp.yml@main
+    with:
+      ftp-hostname: ${{ vars.FTP_HOSTNAME }}
+      ftp-port: ${{ vars.FTP_PORT }}
+      ftp-username: ${{ vars.FTP_USERNAME }}
+      ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
+    secrets:
+      FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
