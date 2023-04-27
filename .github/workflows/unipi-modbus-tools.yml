@@ -4,8 +4,21 @@ on:
   workflow_dispatch:
 
 jobs:
+  parameters:
+    name: Parameters
+    runs-on: ubuntu-latest
+    outputs:
+      package-name:
+        value: unipi-modbus-tools
+      package-version:
+        value: 1.3.4
+      repo-url:
+        value: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
+
   prepare-data:
     name: Prepare data
+    needs:
+      - parameters
     runs-on: ubuntu-latest
 
     steps:
@@ -14,8 +27,8 @@ jobs:
 
       - name: Download and uncompress debian package
         run: |
-          wget ${{ inputs.repo-url }}/${{ inputs.package-name }}_${{ inputs.package-version }}~buster_arm64.deb
-          ar x ${{ inputs.package-name }}_${{ inputs.package-version }}~buster_arm64.deb
+          wget ${{ needs.parameters.outputs.repo-url }}/${{ needs.parameters.outputs.package-name }}_${{ needs.parameters.outputs.package-version }}~buster_arm64.deb
+          ar x ${{ needs.parameters.outputs.package-name }}_${{ needs.parameters.outputs.package-version }}~buster_arm64.deb
 
       - name: Collect data
         run: |
@@ -36,12 +49,13 @@ jobs:
   build-opkg-package:
     name: Build OPKG package
     needs:
+      - parameters
       - prepare-data
     uses: ./.github/workflows/build-opkg-package.yml
     with:
-      package-name: unipi-modbus-tools
-      package-version: 1.3.4
-      repo-url: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
+      package-name: ${{ needs.parameters.outputs.package-name }}
+      package-version: ${{ needs.parameters.outputs.package-version }}
+      repo-url: ${{ needs.parameters.outputs.repo-url }}
 
   publish-on-ftp:
     name: Publish on FTP
