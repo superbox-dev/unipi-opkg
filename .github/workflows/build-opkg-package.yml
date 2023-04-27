@@ -9,8 +9,6 @@ on:
       package-version:
         required: True
         type: string
-      package-depends:
-        type: string
 
 jobs:
   build-opkg-package:
@@ -43,8 +41,8 @@ jobs:
             echo "License: GPL-2.0"
           ) >> opkg-package/control/control
 
-          if [ "${{ inputs.package-depends }}" != "" ]; then
-            echo "Depends: ${{ inputs.package-depends }}" >> opkg-package/control/control
+          if [[ -f "${{ inputs.package-name }}/control/control" ]]; then
+            cat "${{ inputs.package-name }}/control/control" >> opkg-package/control/control
           fi
 
           echo "2.0" > opkg-package/debian-binary
