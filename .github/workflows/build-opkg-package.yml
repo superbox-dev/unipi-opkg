@@ -24,7 +24,7 @@ jobs:
       - name: Download files
         uses: actions/download-artifact@v3
         with:
-          path: .
+          name: opkg-package.tar.gz
 
       - name: Create control file
         run: |
