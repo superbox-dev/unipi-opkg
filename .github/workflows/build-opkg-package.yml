@@ -28,6 +28,7 @@ jobs:
 
       - name: Create control file
         run: |
+          ls -la .
           tar xzfv opkg-package.tar.gz
           
           mkdir -pv opkg-package/control
