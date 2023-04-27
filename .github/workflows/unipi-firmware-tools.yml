@@ -1,7 +1,5 @@
 name: Unipi Firmware Tools
 
-concurrency: publish_on_ftp
-
 on:
   workflow_dispatch:
 
