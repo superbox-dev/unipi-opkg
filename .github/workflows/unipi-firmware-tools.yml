@@ -61,7 +61,6 @@ jobs:
     with:
       package-name: ${{ needs.prepare-data.outputs.package-name }}
       package-version: ${{ needs.prepare-data.outputs.package-version }}
-      repo-url: ${{ needs.prepare-data.outputs.repo-url }}
 
   publish-on-ftp:
     name: Publish on FTP
