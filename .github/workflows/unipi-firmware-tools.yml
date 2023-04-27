@@ -73,7 +73,7 @@ jobs:
     name: Publish on FTP
     concurrency:
       group: publish_on_ftp
-      cancel-in-progress: false
+      cancel-in-progress: False
     needs:
       - build-opkg-package
     uses: superbox-dev/python-package-workflows/.github/workflows/publish-on-ftp.yml@main
