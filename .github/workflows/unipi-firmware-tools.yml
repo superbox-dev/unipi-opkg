@@ -17,6 +17,8 @@ jobs:
 
   prepare-data:
     name: Prepare data
+    needs:
+      - tests
     runs-on: ubuntu-latest
 
     outputs:
