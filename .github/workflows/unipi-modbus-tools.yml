@@ -77,16 +77,6 @@ jobs:
           name: opkg-package
           path: opkg-package/*.ipk
 
-  release:
-    name: Release
-    if: github.ref_type == 'tag'
-    uses: superbox-dev/python-package-workflows/.github/workflows/release.yml@main
-    needs:
-      - build-opkg-package
-    with:
-      package-name: ${{ env.PACKAGE_NAME }}
-      package-version: ${{ env.PACKAGE_VERSION }}
-
   publish-on-ftp:
     name: Publish on FTP
     needs:
