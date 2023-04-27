@@ -1,4 +1,4 @@
-name: Unipi Firmware Update
+name: Unipi Firmware Tools
 
 on:
   workflow_dispatch:
