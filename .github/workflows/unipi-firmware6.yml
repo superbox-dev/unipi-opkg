@@ -10,6 +10,10 @@ env:
   PACKAGE_DEPENDS: unipi-firmware-tools (>= 2.8)
 
 jobs:
+  tests:
+    name: Tests
+    uses: ./.github/workflows/_tests.yml
+
   prepare-data:
     name: Prepare data
     runs-on: ubuntu-latest
