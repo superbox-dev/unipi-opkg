@@ -27,7 +27,7 @@ jobs:
       - name: Create control file
         run: |
           mkdir -pv opkg-package/control
-          dpkg-deb --showformat='Package: ${Package}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
+          dpkg-deb --showformat='Package: ${Package}\nDescription: ${binary:Summary}\n' --show ${{ inputs.package-name }}_${{ inputs.package-version }}\~buster_arm64.deb > opkg-package/control/control 
           
           (
             echo "Maintainer: Michael Hacker <mh@superbox.one>"

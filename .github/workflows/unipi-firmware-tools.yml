@@ -39,6 +39,8 @@ jobs:
 
       - name: Collect data
         run: |
+          cp -v *.deb opkg-package/
+          
           mkdir -pv opkg-package/data/usr/local/opt/unipi/tools
           cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/usr/local/opt/unipi/tools/
           
