@@ -9,9 +9,6 @@ on:
       package-version:
         required: True
         type: string
-      repo-url:
-        required: True
-        type: string
 
 jobs:
   build-opkg-package:
@@ -26,14 +23,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: .
-
-      - name: Uncompress debian package
-        run: |          
-          mkdir -pv control
-          tar xf control.tar.xz -C control
-          
-          mkdir -pv data
-          tar xf data.tar.xz -C data
 
       - name: Create control file
         run: |

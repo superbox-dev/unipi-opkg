@@ -16,7 +16,6 @@ jobs:
     outputs:
       package-name: ${{ steps.parameters.outputs.package-name }}
       package-version: ${{ steps.parameters.outputs.package-version }}
-      repo-url: ${{ steps.parameters.outputs.repo-url }}
 
     steps:
       - name: Check out repository
@@ -26,12 +25,17 @@ jobs:
         run: |
           echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
           echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
-          echo "repo-url=${{ env.REPO_URL }}" >> $GITHUB_OUTPUT
 
       - name: Download and uncompress debian package
         run: |
-          wget ${{ steps.parameters.outputs.repo-url }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+          wget ${{ env.REPO_URL }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
           ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+
+          mkdir -pv control
+          tar xf control.tar.xz -C control
+          
+          mkdir -pv data
+          tar xf data.tar.xz -C data
 
       - name: Collect data
         run: |
