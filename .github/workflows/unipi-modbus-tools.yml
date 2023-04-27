@@ -21,8 +21,8 @@ jobs:
 
       - name: Download and uncompress debian package
         run: |
-          wget ${{ prepare-data.outputs.repo-url }}/${{ prepare-data.outputs.package-name }}_${{ prepare-data.outputs.package-version }}~buster_arm64.deb
-          ar x ${{ prepare-data.outputs.package-name }}_${{ prepare-data.outputs.package-version }}~buster_arm64.deb
+          wget ${{ outputs.repo-url }}/${{ outputs.package-name }}_${{ outputs.package-version }}~buster_arm64.deb
+          ar x ${{ outputs.package-name }}_${{ outputs.package-version }}~buster_arm64.deb
 
       - name: Collect data
         run: |
