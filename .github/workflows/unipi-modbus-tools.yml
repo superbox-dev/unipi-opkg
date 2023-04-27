@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  parameters:
-    name: Parameters
+  prepare-data:
+    name: Prepare data
+    needs:
+      - parameters
     runs-on: ubuntu-latest
     outputs:
       package-name:
@@ -15,20 +17,14 @@ jobs:
       repo-url:
         value: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
 
-  prepare-data:
-    name: Prepare data
-    needs:
-      - parameters
-    runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Download and uncompress debian package
         run: |
-          wget ${{ needs.parameters.outputs.repo-url }}/${{ needs.parameters.outputs.package-name }}_${{ needs.parameters.outputs.package-version }}~buster_arm64.deb
-          ar x ${{ needs.parameters.outputs.package-name }}_${{ needs.parameters.outputs.package-version }}~buster_arm64.deb
+          wget ${{ prepare-data.outputs.repo-url }}/${{ prepare-data.outputs.package-name }}_${{ prepare-data.outputs.package-version }}~buster_arm64.deb
+          ar x ${{ prepare-data.outputs.package-name }}_${{ prepare-data.outputs.package-version }}~buster_arm64.deb
 
       - name: Collect data
         run: |
@@ -49,13 +45,12 @@ jobs:
   build-opkg-package:
     name: Build OPKG package
     needs:
-      - parameters
       - prepare-data
     uses: ./.github/workflows/build-opkg-package.yml
     with:
-      package-name: ${{ needs.parameters.outputs.package-name }}
-      package-version: ${{ needs.parameters.outputs.package-version }}
-      repo-url: ${{ needs.parameters.outputs.repo-url }}
+      package-name: ${{ needs.prepare-data.outputs.package-name }}
+      package-version: ${{ needs.prepare-data.outputs.package-version }}
+      repo-url: ${{ needs.prepare-data.outputs.repo-url }}
 
   publish-on-ftp:
     name: Publish on FTP
