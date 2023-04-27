@@ -2,9 +2,13 @@ name: Unipi Modbus Tools
 
 on:
   workflow_dispatch:
+  push:
+    tags:
+      - '*'
 
 env:
-  VERSION: 1.3.4
+  PACKAGE_NAME: unipi-modbus-tools
+  PACKAGE_VERSION: 1.3.4
 
 jobs:
   build-opkg-package:
@@ -17,11 +21,11 @@ jobs:
 
       - name: Download
         run: |
-          wget https://repo.unipi.technology/debian/pool/main/u/unipi-tools/unipi-modbus-tools_${{ env.VERSION }}~buster_arm64.deb
+          wget https://repo.unipi.technology/debian/pool/main/u/unipi-tools/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}~buster_arm64.deb
 
       - name: Uncompress debian package
         run: |
-          ar x unipi-modbus-tools_${{ env.VERSION }}~buster_arm64.deb
+          ar x ${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}~buster_arm64.deb
           
           mkdir -pv control
           tar xf control.tar.xz -C control
@@ -35,7 +39,7 @@ jobs:
           dpkg-deb --showformat='Package: ${Package}\nMaintainer: ${Maintainer}\nDescription: ${binary:Summary}\n' --show unipi-modbus-tools_1.3.4\~buster_arm64.deb > opkg-package/control/control 
           
           (
-            echo "Version: ${{ env.VERSION }}"
+            echo "Version: ${{ env.PACKAGE_VERSION }}"
             echo "Architecture: aarch64"
             echo "License: GPL-2.0"
           ) >> opkg-package/control/control
@@ -64,7 +68,7 @@ jobs:
           sudo chown -R root:root opkg-package/*
 
           tar -C opkg-package -czvf \
-            opkg-package/unipi-modbus-tools_${{ env.VERSION }}_aarch64.ipk \
+            opkg-package/${{ env.PACKAGE_NAME }}_${{ env.PACKAGE_VERSION }}_aarch64.ipk \
             control.tar.gz data.tar.gz debian-binary
 
       - name: Upload OPKG package
@@ -72,6 +76,16 @@ jobs:
         with:
           name: opkg-package
           path: opkg-package/*.ipk
+
+  release:
+    name: Release
+    if: github.ref_type == 'tag'
+    uses: superbox-dev/python-package-workflows/.github/workflows/release.yml@main
+    needs:
+      - build-opkg-package
+    with:
+      package-name: ${{ env.PACKAGE_NAME }}
+      package-version: ${{ env.PACKAGE_VERSION }}
 
   publish-on-ftp:
     name: Publish on FTP
