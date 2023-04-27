@@ -30,8 +30,8 @@ jobs:
 
       - name: Download and uncompress debian package
         run: |
-          wget ${{ outputs.repo-url }}/${{ outputs.package-name }}_${{ outputs.package-version }}~buster_arm64.deb
-          ar x ${{ outputs.package-name }}_${{ outputs.package-version }}~buster_arm64.deb
+          wget ${{ steps.parameters.outputs.repo-url }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
 
       - name: Collect data
         run: |
