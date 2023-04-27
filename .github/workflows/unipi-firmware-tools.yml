@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  PACKAGE_NAME: unipi-modbus-tools
-  PACKAGE_VERSION: 1.3.4
+  PACKAGE_NAME: unipi-firmware-tools
+  PACKAGE_VERSION: 2.8
   REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
 
 jobs:
@@ -42,12 +42,7 @@ jobs:
           cp -v *.deb opkg-package/
           
           mkdir -pv opkg-package/data/usr/local/opt/unipi/tools
-          cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/usr/local/opt/unipi/tools/
-          
-          mkdir -pv opkg-package/data/usr/local/etc/default
-          cp -v data/etc/default/unipitcp opkg-package/data/usr/local/etc/default/
-          
-          cp -rv unipi-modbus-tools/data/* opkg-package/data/
+          cp -v data/opt/unipi/tools/{fwserial,fwspi} opkg-package/data/usr/local/opt/unipi/tools/
 
       - name: Upload OPKG data
         uses: actions/upload-artifact@v3
