@@ -3,21 +3,30 @@ name: Unipi Modbus Tools
 on:
   workflow_dispatch:
 
+env:
+  PACKAGE_NAME: unipi-modbus-tools
+  PACKAGE_VERSION: 1.3.4
+  REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
+
 jobs:
   prepare-data:
     name: Prepare data
-    needs:
-      - parameters
     runs-on: ubuntu-latest
 
     outputs:
-      package-name: unipi-modbus-tools
-      package-version: 1.3.4
-      repo-url: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
+      package-name: ${{ steps.parameters.outputs.package-name }}
+      package-version: ${{ steps.parameters.outputs.package-version }}
+      repo-url: ${{ steps.parameters.outputs.repo-url }}
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+
+      - id: parameters
+        run: |
+          echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
+          echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
+          echo "repo-url=${{ env.REPO_URL }}" >> $GITHUB_OUTPUT
 
       - name: Download and uncompress debian package
         run: |
