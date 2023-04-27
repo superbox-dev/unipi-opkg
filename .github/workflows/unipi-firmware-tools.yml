@@ -1,5 +1,7 @@
 name: Unipi Firmware Tools
 
+concurrency: publish_on_ftp
+
 on:
   workflow_dispatch:
 
@@ -68,7 +70,6 @@ jobs:
 
   publish-on-ftp:
     name: Publish on FTP
-    concurrency: publish_on_ftp
     needs:
       - build-opkg-package
     uses: superbox-dev/python-package-workflows/.github/workflows/publish-on-ftp.yml@main
