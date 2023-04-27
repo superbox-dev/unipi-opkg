@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: opkg-package.tar.gz
-          path: opkg-package.tar.gz
+          path: .
 
   build-opkg-package:
     name: Build OPKG package
