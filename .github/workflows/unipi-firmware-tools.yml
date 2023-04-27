@@ -39,10 +39,10 @@ jobs:
 
       - name: Collect data
         run: |
-          cp -v *.deb opkg-package/
-          
           mkdir -pv opkg-package/data/usr/local/opt/unipi/tools
           cp -v data/opt/unipi/tools/{fwserial,fwspi} opkg-package/data/usr/local/opt/unipi/tools/
+
+          cp -v *.deb opkg-package/
 
       - name: Upload OPKG data
         uses: actions/upload-artifact@v3
