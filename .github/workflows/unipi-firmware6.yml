@@ -36,7 +36,7 @@ jobs:
 
           mkdir -pv control
           tar xf control.tar.xz -C control
-          
+
           mkdir -pv data
           tar xf data.tar.xz -C data
 
