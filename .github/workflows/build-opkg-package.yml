@@ -24,7 +24,7 @@ jobs:
         with:
           name: opkg-package.tar.gz
 
-      - name: Create control file
+      - name: Create control files
         run: |
           tar xzfv opkg-package.tar.gz
 
@@ -45,6 +45,14 @@ jobs:
             cat "${{ inputs.package-name }}/control/control" >> opkg-package/control/control
           fi
 
+          if [[ -f "${{ inputs.package-name }}/control/postinst" ]]; then
+            cp -v "${{ inputs.package-name }}/control/postinst" opkg-package/control/
+          fi
+          
+          if [[ -f "${{ inputs.package-name }}/control/prerm" ]]; then
+            cp -v "${{ inputs.package-name }}/control/prerm" opkg-package/control/
+          fi
+
           echo "2.0" > opkg-package/debian-binary
 
       - name: Create conffiles file
@@ -53,14 +61,17 @@ jobs:
 
       - name: Build OPKG package
         run: |
-          sudo chown -R root:root opkg-package/*
+          pushd opkg-package/control
+          tar --numeric-owner --group=0 --owner=0 -czf ../control.tar.gz .
+          popd
+          
+          pushd opkg-package/data
+          tar --numeric-owner --group=0 --owner=0 -czf ../data.tar.gz .
+          popd
 
-          tar -C opkg-package/control -czvf opkg-package/control.tar.gz .
-          tar -C opkg-package/data -czvf opkg-package/data.tar.gz .
-
-          tar -C opkg-package -czvf \
-            opkg-package/${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk \
-            control.tar.gz data.tar.gz debian-binary
+          pushd opkg-package
+          ar rv ../${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk control.tar.gz data.tar.gz debian-binary
+          popd
 
       - name: Upload OPKG package
         uses: actions/upload-artifact@v3

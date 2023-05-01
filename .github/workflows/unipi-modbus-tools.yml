@@ -56,7 +56,7 @@ jobs:
           cp -rv unipi-modbus-tools/data/* opkg-package/data/
 
           cp -v *.deb opkg-package/
-          tar czvf opkg-package.tar.gz opkg-package
+          tar -czf opkg-package.tar.gz opkg-package
 
       - name: Upload OPKG data
         uses: actions/upload-artifact@v3
