@@ -48,7 +48,7 @@ jobs:
       - name: Collect data
         run: |
           mkdir -pv opkg-package/data/opt/unipi/tools
-          cp -v data/opt/unipi/tools/{fwserial,fwspi} opkg-package/opt/unipi/tools/
+          cp -v data/opt/unipi/tools/{fwserial,fwspi} opkg-package/data/opt/unipi/tools/
           chmod +x opkg-package/data/opt/unipi/tools/*
 
           cp -v *.deb opkg-package/
