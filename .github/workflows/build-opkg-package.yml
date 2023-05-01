@@ -70,7 +70,7 @@ jobs:
           popd
 
           pushd opkg-package
-          ar rv ../${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk control.tar.gz data.tar.gz debian-binary
+          ar rv ${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk control.tar.gz data.tar.gz debian-binary
           popd
 
       - name: Upload OPKG package
