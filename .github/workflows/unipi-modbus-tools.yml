@@ -47,11 +47,11 @@ jobs:
 
       - name: Collect data
         run: |
-          mkdir -pv opkg-package/data/usr/local/opt/unipi/tools
-          cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/usr/local/opt/unipi/tools/
+          mkdir -pv opkg-package/data/opt/unipi/tools
+          cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/opt/unipi/tools/
 
-          mkdir -pv opkg-package/data/usr/local/etc/default
-          cp -v data/etc/default/unipitcp opkg-package/data/usr/local/etc/default/
+          mkdir -pv opkg-package/data/etc/default
+          cp -v data/etc/default/unipitcp opkg-package/data/etc/default/
 
           cp -rv unipi-modbus-tools/data/* opkg-package/data/
 
