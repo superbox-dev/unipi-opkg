@@ -45,8 +45,8 @@ jobs:
 
       - name: Collect data
         run: |
-          mkdir -pv opkg-package/data/usr/local/opt/unipi/firmware
-          cp -v data/opt/unipi/firmware/* opkg-package/data/usr/local/opt/unipi/firmware/
+          mkdir -pv opkg-package/data/opt/unipi/firmware
+          cp -v data/opt/unipi/firmware/* opkg-package/data/opt/unipi/firmware/
 
           cp -v *.deb opkg-package/
           tar czvf opkg-package.tar.gz opkg-package
