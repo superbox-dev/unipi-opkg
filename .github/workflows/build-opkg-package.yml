@@ -64,7 +64,7 @@ jobs:
           pushd opkg-package/control
           tar --numeric-owner --group=0 --owner=0 -czf ../control.tar.gz .
           popd
-          
+
           pushd opkg-package/data
           tar --numeric-owner --group=0 --owner=0 -czf ../data.tar.gz .
           popd
