@@ -49,7 +49,7 @@ jobs:
 
       - name: Create conffiles file
         run: |
-          find data/etc -type f | sed 's/data/\/usr\/local/g' > opkg-package/control/conffiles
+          find data/etc -type f | sed 's/data//g' > opkg-package/control/conffiles
 
       - name: Build OPKG package
         run: |
