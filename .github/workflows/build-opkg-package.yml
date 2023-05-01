@@ -48,7 +48,7 @@ jobs:
           if [[ -f "${{ inputs.package-name }}/control/postinst" ]]; then
             cp -v "${{ inputs.package-name }}/control/postinst" opkg-package/control/
           fi
-          
+
           if [[ -f "${{ inputs.package-name }}/control/prerm" ]]; then
             cp -v "${{ inputs.package-name }}/control/prerm" opkg-package/control/
           fi
