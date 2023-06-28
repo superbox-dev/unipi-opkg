@@ -1,4 +1,4 @@
-name: Unipi Modbus Tools
+name: Unipi Modbus Tools v1
 
 on:
   workflow_dispatch:
