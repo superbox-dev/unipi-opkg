@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v3
 
       - id: parameters
+        name: Set output parameters
         run: |
           echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
           echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
