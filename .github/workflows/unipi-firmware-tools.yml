@@ -9,14 +9,14 @@ env:
   REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
 
 jobs:
-  tests:
-    name: Tests
-    uses: ./.github/workflows/_tests.yml
+  code-analyse:
+    name: Code analyse
+    uses: ./.github/workflows/_code-analyse.yml
 
   prepare-data:
     name: Prepare data
     needs:
-      - tests
+      - code-analyse
     runs-on: ubuntu-latest
 
     outputs:

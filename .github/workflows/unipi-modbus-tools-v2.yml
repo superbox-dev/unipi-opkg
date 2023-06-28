@@ -5,18 +5,19 @@ on:
 
 env:
   PACKAGE_NAME: unipi-modbus-tools
-  PACKAGE_VERSION: 1.3.4
+  PACKAGE_VERSION: 2.8
   REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
+  REPO_SUFFIX: v2
 
 jobs:
-  tests:
-    name: Tests
-    uses: ./.github/workflows/_tests.yml
+  code-analyse:
+    name: Code analyse
+    uses: ./.github/workflows/_code-analyse.yml
 
   prepare-data:
     name: Prepare data
     needs:
-      - tests
+      - code-analyse
     runs-on: ubuntu-latest
 
     outputs:
@@ -86,5 +87,6 @@ jobs:
       ftp-port: ${{ vars.FTP_PORT }}
       ftp-username: ${{ vars.FTP_USERNAME }}
       ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
+      repo-suffix: ${{ env.REPO_SUFFIX }}
     secrets:
       FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
