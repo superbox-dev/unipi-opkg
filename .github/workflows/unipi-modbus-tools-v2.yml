@@ -23,6 +23,7 @@ jobs:
     outputs:
       package-name: ${{ steps.parameters.outputs.package-name }}
       package-version: ${{ steps.parameters.outputs.package-version }}
+      repo-suffix: ${{ steps.parameters.outputs.repo-suffix }}
 
     steps:
       - name: Check out repository
@@ -32,6 +33,7 @@ jobs:
         run: |
           echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
           echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
+          echo "repo-suffix=${{ env.REPO_SUFFIX }}" >> $GITHUB_OUTPUT
 
       - name: Download and uncompress debian package
         # yamllint disable rule:line-length
@@ -80,6 +82,7 @@ jobs:
       group: publish_on_ftp
       cancel-in-progress: False
     needs:
+      - prepare-data
       - build-opkg-package
     uses: superbox-dev/python-package-workflows/.github/workflows/publish-on-ftp.yml@main
     with:
@@ -87,6 +90,6 @@ jobs:
       ftp-port: ${{ vars.FTP_PORT }}
       ftp-username: ${{ vars.FTP_USERNAME }}
       ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
-      repo-suffix: ${{ env.REPO_SUFFIX }}
+      repo-suffix: ${{ needs.prepare-data.outputs.repo-suffix }}
     secrets:
       FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
