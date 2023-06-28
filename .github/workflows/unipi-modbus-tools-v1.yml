@@ -34,6 +34,7 @@ jobs:
         run: |
           echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
           echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
+          echo "repo-suffix=${{ env.REPO_SUFFIX }}" >> $GITHUB_OUTPUT
 
       - name: Download and uncompress debian package
         # yamllint disable rule:line-length
