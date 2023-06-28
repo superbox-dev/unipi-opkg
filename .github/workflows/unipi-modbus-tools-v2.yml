@@ -7,7 +7,7 @@ env:
   PACKAGE_NAME: unipi-modbus-tools
   PACKAGE_VERSION: 2.8
   REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
-  REPO_SUFFIX: v2
+  REPO_SUFFIX: -v2
 
 jobs:
   code-analyse:
