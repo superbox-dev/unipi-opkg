@@ -56,8 +56,6 @@ jobs:
           cp -v data/opt/unipi/tools/{uhelper,unipiid} opkg-package/data/opt/unipi/tools/
           chmod +x opkg-package/data/opt/unipi/tools/{uhelper,unipiid}
 
-          cp -rv unipi-os-configurator/data/* opkg-package/data/
-
           cp -v *.deb opkg-package/
           tar -czf opkg-package.tar.gz opkg-package
 
