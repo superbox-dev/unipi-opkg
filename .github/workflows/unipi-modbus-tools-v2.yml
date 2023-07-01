@@ -2,12 +2,14 @@ name: Unipi Modbus Tools v2
 
 on:
   workflow_dispatch:
+      is-dev-version:
+        description: Build testing package
+        type: boolean
 
 env:
   PACKAGE_NAME: unipi-modbus-tools
   PACKAGE_VERSION: 2.8
   REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
-  IS_DEV_VERSION: 'true'
 
 jobs:
   code-analyse:
@@ -34,7 +36,6 @@ jobs:
         run: |
           echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
           echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
-          echo "is-dev-version=${{ env.IS_DEV_VERSION }}" >> $GITHUB_OUTPUT
 
       - name: Download and uncompress debian package
         # yamllint disable rule:line-length
@@ -92,6 +93,6 @@ jobs:
       ftp-port: ${{ vars.FTP_PORT }}
       ftp-username: ${{ vars.FTP_USERNAME }}
       ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
-      is-dev-version: ${{ needs.prepare-data.outputs.is-dev-version }}
+      is-dev-version: ${{ inputs.is-dev-version }}
     secrets:
       FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
