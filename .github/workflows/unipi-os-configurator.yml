@@ -10,7 +10,7 @@ on:
 env:
   PACKAGE_NAME: unipi-os-configurator
   PACKAGE_VERSION: 0.42
-  REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-os-configurator/unipi-os-configurator
+  REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-os-configurator
 
 jobs:
   code-analyse:
@@ -26,7 +26,6 @@ jobs:
     outputs:
       package-name: ${{ steps.parameters.outputs.package-name }}
       package-version: ${{ steps.parameters.outputs.package-version }}
-      is-dev-version: ${{ steps.parameters.outputs.is-dev-version }}
 
     steps:
       - name: Check out repository
@@ -37,7 +36,6 @@ jobs:
         run: |
           echo "package-name=${{ env.PACKAGE_NAME }}" >> $GITHUB_OUTPUT
           echo "package-version=${{ env.PACKAGE_VERSION }}" >> $GITHUB_OUTPUT
-          echo "is-dev-version=${{ inputs.is-dev-version }}" >> $GITHUB_OUTPUT
 
       - name: Download and uncompress debian package
         # yamllint disable rule:line-length
