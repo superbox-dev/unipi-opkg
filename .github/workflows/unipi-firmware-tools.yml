@@ -50,7 +50,7 @@ jobs:
         run: |
           mkdir -pv opkg-package/data/opt/unipi/tools
           cp -v data/opt/unipi/tools/{fwserial,fwspi} opkg-package/data/opt/unipi/tools/
-          chmod +x opkg-package/data/opt/unipi/tools/*
+          chmod +x opkg-package/data/opt/unipi/tools/{fwserial,fwspi}
 
           cp -v *.deb opkg-package/
           tar -czf opkg-package.tar.gz opkg-package

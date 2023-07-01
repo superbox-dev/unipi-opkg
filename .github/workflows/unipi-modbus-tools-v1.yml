@@ -50,6 +50,7 @@ jobs:
         run: |
           mkdir -pv opkg-package/data/opt/unipi/tools
           cp -v data/opt/unipi/tools/unipi_tcp_server opkg-package/data/opt/unipi/tools/
+          chmod +x opkg-package/data/opt/unipi/tools/unipi_tcp_server
 
           mkdir -pv opkg-package/data/etc/default
           cp -v data/etc/default/unipitcp opkg-package/data/etc/default/
