@@ -2,9 +2,9 @@ name: Unipi Modbus Tools v2
 
 on:
   workflow_dispatch:
-      is-dev-version:
-        description: Build testing package
-        type: boolean
+    is-dev-version:
+      description: Build testing package
+      type: boolean
 
 env:
   PACKAGE_NAME: unipi-modbus-tools
