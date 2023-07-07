@@ -30,7 +30,6 @@ jobs:
     outputs:
       package-name: ${{ steps.parameters.outputs.package-name }}
       package-version: ${{ steps.parameters.outputs.package-version }}
-      is-dev-version: ${{ steps.parameters.outputs.is-dev-version }}
 
     steps:
       - name: Check out repository
