@@ -9,6 +9,9 @@ on:
       package-version:
         required: True
         type: string
+      is-dev-version:
+        default: False
+        type: boolean
 
 jobs:
   build-opkg-package:
@@ -70,7 +73,14 @@ jobs:
           popd
 
           pushd opkg-package
-          ar rv ${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk control.tar.gz data.tar.gz debian-binary
+          
+          if [ "${{ inputs.is-dev-version }}" == "true" ]; then
+            ipk_file_name="${{ inputs.package-name }}_${{ inputs.package-version }}-dev_aarch64.ipk"
+          else
+            ipk_file_name="${{ inputs.package-name }}_${{ inputs.package-version }}_aarch64.ipk"
+          fi
+          
+          ar rv ${ipk_file_name} control.tar.gz data.tar.gz debian-binary
           popd
 
       - name: Upload OPKG package

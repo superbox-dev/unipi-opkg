@@ -2,10 +2,18 @@ name: Unipi Firmware Tools
 
 on:
   workflow_dispatch:
+    inputs:
+      package-version:
+        description: Version
+        default: '2.14'
+        type: string
+      is-dev-version:
+        description: Build testing package
+        type: boolean
 
 env:
   PACKAGE_NAME: unipi-firmware-tools
-  PACKAGE_VERSION: 2.8
+  PACKAGE_VERSION: ${{ inputs.package-version }}
   REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-tools
 
 jobs:
@@ -22,6 +30,7 @@ jobs:
     outputs:
       package-name: ${{ steps.parameters.outputs.package-name }}
       package-version: ${{ steps.parameters.outputs.package-version }}
+      is-dev-version: ${{ steps.parameters.outputs.is-dev-version }}
 
     steps:
       - name: Check out repository
@@ -37,7 +46,7 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           wget ${{ env.REPO_URL }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
-          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~bullseye_arm64.deb
 
           mkdir -pv control
           tar xf control.tar.xz -C control
@@ -69,6 +78,7 @@ jobs:
     with:
       package-name: ${{ needs.prepare-data.outputs.package-name }}
       package-version: ${{ needs.prepare-data.outputs.package-version }}
+      is-dev-version: ${{ inputs.is-dev-version }}
 
   publish-on-ftp:
     name: Publish on FTP
@@ -83,5 +93,6 @@ jobs:
       ftp-port: ${{ vars.FTP_PORT }}
       ftp-username: ${{ vars.FTP_USERNAME }}
       ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
+      is-dev-version: ${{ inputs.is-dev-version }}
     secrets:
       FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
