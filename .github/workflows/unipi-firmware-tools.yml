@@ -8,7 +8,7 @@ on:
         default: '2.14'
         type: string
       is-dev-version:
-        description: Build testing package
+        description: Build develop package
         type: boolean
 
 env:
