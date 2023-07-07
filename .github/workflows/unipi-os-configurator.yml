@@ -40,8 +40,8 @@ jobs:
       - name: Download and uncompress debian package
         # yamllint disable rule:line-length
         run: |
-          wget ${{ env.REPO_URL }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
-          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~buster_arm64.deb
+          wget ${{ env.REPO_URL }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~bullseye_arm64.deb
+          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~bullseye_arm64.deb
 
           mkdir -pv control
           tar xf control.tar.xz -C control
