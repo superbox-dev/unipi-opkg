@@ -3,13 +3,17 @@ name: Unipi OS Configurator
 on:
   workflow_dispatch:
     inputs:
+      package-version:
+        description: Version
+        default: '0.42'
+        type: string
       is-dev-version:
-        description: Build testing package
+        description: Build develop package
         type: boolean
 
 env:
   PACKAGE_NAME: unipi-os-configurator
-  PACKAGE_VERSION: 0.42
+  PACKAGE_VERSION: ${{ inputs.package-version }}
   REPO_URL: https://repo.unipi.technology/debian/pool/main/u/unipi-os-configurator
 
 jobs:
@@ -55,6 +59,9 @@ jobs:
           mkdir -pv opkg-package/data/opt/unipi/tools
           cp -v data/opt/unipi/tools/{uhelper,unipiid} opkg-package/data/opt/unipi/tools/
           chmod +x opkg-package/data/opt/unipi/tools/{uhelper,unipiid}
+          
+          mkdir -pv opkg-package/data/etc/udev/rules.d
+          cp -v data/lib/udev/rules.d/* opkg-package/data/etc/udev/rules.d
 
           cp -v *.deb opkg-package/
           tar -czf opkg-package.tar.gz opkg-package
@@ -73,6 +80,7 @@ jobs:
     with:
       package-name: ${{ needs.prepare-data.outputs.package-name }}
       package-version: ${{ needs.prepare-data.outputs.package-version }}
+      is-dev-version: ${{ inputs.is-dev-version }}
 
   publish-on-ftp:
     name: Publish on FTP
