@@ -17,7 +17,7 @@ on:
           - v2
 
 env:
-  PACKAGE_NAME: unipi-os-configurator
+  PACKAGE_NAME: unipi-os-configurator-data
   PACKAGE_VERSION: ${{ inputs.package-version }}
   REPO_URL: https://repo.unipi.technology/debian/pool/neuron-main/u/unipi-os-configurator-data
 
