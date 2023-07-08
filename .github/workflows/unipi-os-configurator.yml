@@ -64,7 +64,7 @@ jobs:
           mkdir -pv opkg-package/data/opt/unipi/tools
           cp -v data/opt/unipi/tools/{uhelper,unipiid} opkg-package/data/opt/unipi/tools/
           chmod +x opkg-package/data/opt/unipi/tools/{uhelper,unipiid}
-          
+
           mkdir -pv opkg-package/data/etc/udev/rules.d
           cp -v data/lib/udev/rules.d/* opkg-package/data/etc/udev/rules.d
 
