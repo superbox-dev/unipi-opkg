@@ -1,4 +1,4 @@
-name: Unipi OS Configurator
+name: Unipi OS configurator
 
 on:
   workflow_dispatch:

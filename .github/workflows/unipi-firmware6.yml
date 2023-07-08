@@ -1,4 +1,4 @@
-name: Unipi Firmware 6
+name: Unipi firmware 6
 
 on:
   workflow_dispatch:
