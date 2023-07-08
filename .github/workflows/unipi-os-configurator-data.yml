@@ -50,7 +50,7 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           wget ${{ env.REPO_URL }}/${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~bullseye-neuron_armhf.deb
-          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~bullseyec
+          ar x ${{ steps.parameters.outputs.package-name }}_${{ steps.parameters.outputs.package-version }}~bullseye-neuron_armhf.deb
 
           mkdir -pv control
           tar xf control.tar.xz -C control
