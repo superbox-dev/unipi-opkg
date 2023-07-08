@@ -63,7 +63,7 @@ jobs:
         run: |
           mkdir -pv opkg-package/data/opt/unipi/os-configurator/{udev}
           cp -v data/opt/unipi/os-configurator/unipi_values.py opkg-package/data/opt/unipi/os-configurator/
-          cp -v data/opt/unipi/os-configurator/udev/* opkg-package/data/opt/unipi/os-configurator/udev/ 
+          cp -v data/opt/unipi/os-configurator/udev/* opkg-package/data/opt/unipi/os-configurator/udev/
 
           mkdir -pv opkg-package/data/etc/udev/rules.d
           cp -v data/lib/udev/rules.d/* opkg-package/data/etc/udev/rules.d
