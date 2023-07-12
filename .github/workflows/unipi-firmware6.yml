@@ -10,12 +10,6 @@ on:
       is-dev-version:
         description: Build develop package
         type: boolean
-      os-version:
-        type: choice
-        description: Unipi Control OS version
-        options:
-          - v1
-          - v2
 
 env:
   PACKAGE_NAME: unipi-firmware6
@@ -95,7 +89,6 @@ jobs:
       ftp-port: ${{ vars.FTP_PORT }}
       ftp-username: ${{ vars.FTP_USERNAME }}
       ftp-publish-path: ${{ vars.FTP_PUBLISH_PATH }}
-      repo-path: ${{ inputs.os-version }}
       is-dev-version: ${{ inputs.is-dev-version }}
     secrets:
       FTP_PASSWORD: ${{ secrets.FILES_SUPERBOX_ONE_FTP_PASSWORD }}
