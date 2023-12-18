@@ -61,7 +61,7 @@ jobs:
           tar -czf opkg-package.tar.gz opkg-package
 
       - name: Upload OPKG data
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: opkg-package.tar.gz
           path: opkg-package.tar.gz
